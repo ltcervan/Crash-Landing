@@ -2,7 +2,7 @@ const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 const CANVAS_WIDTH = canvas.width = 800;
 const CANVAS_HEIGHT = canvas.height = 700;
-let gameSpeed = 12; // to control scroll speed:
+let gameSpeed = 3; // to control scroll speed: It is a global game speed
 
 //--- appending all layers of parallax background ----
 const backgroundLayer1 = new Image();
@@ -39,19 +39,44 @@ class Layer {
         this.height = 700; // Same height for all layers
         this.x2 = this.width;
         this.image = image; // This will be the argument we pass into the class 
-        this.speedModifier = speedModifier; // This will be the argument we pass into the class 
+        this.speedModifier = speedModifier; // This will be the argument we pass into the class  
         this.speed = gameSpeed * this.speedModifier;
     }
-    update(){
+    update(){ // this will help keep the game speed dynamic rather than static
         this.speed = gameSpeed * this.speedModifier;
+        if (this.x <= -this.width){
+            this.x = this.width + this.x2 - this.speed;
+        }
+        if (this.x2 <= -this.width) {
+            this.x2 = this.width + this.x - this.speed;
+        }
+        this.x = Math.floor(this.x - this.speed);
+        this.x2 = Math.floor(this.x2 - this.speed);
     }
-    draw(){
-
+    draw(){ // This will draw the image at the coordinates given bellow
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        ctx.drawImage(this.image, this.x2, this.y, this.width, this.height);
     }
 }
+// creating instances of the class Layer using the background-images, to prep for animation
+const layer1 = new Layer(backgroundLayer1, .2); // inputing the 2 arguments (image, speedModifier)
+const layer2 = new Layer(backgroundLayer2, .4);
+const layer3 = new Layer(backgroundLayer3, .5);
+const layer4 = new Layer(backgroundLayer4, .65);
+const layer5 = new Layer(backgroundLayer5, .75);
+const layer6 = new Layer(backgroundLayer6, .8);
+const layer7 = new Layer(backgroundLayer7, .95);
+const layer8 = new Layer(backgroundLayer8, 1);
+
+// an array of all the new instances made from class layer
+const allLayers = [layer1, layer2, layer3, layer4, layer5, layer6, layer7, layer8]; 
 
 function animation() {
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    allLayers.forEach(layer => {
+        layer.update();
+        layer.draw();
+    })
     requestAnimationFrame(animation);
 };
 animation();

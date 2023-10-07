@@ -1,8 +1,12 @@
+/** @type {HTMLCanvasElement} */ // Accessing canvas elements in HTML
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 const CANVAS_WIDTH = canvas.width = 800;
 const CANVAS_HEIGHT = canvas.height = 700;
 let gameSpeed = 3; // to control scroll speed: It is a global game speed
+
+// ---- Level Diffculties ---- Even listeners ~~~~~~ Optional 1:15min
+
 
 //--- appending all layers of parallax background ----
 const backgroundLayer1 = new Image();
@@ -23,7 +27,9 @@ const backgroundLayer8 = new Image();
 backgroundLayer8.src = 'layer-8.png';
 
 
-// --- Making background animation ---
+/**
+ * ================== Making Background Animation ==================
+ */
 
 /**
  * The "Layer" class will be used as a blue print to draw each layer
@@ -80,3 +86,47 @@ function animation() {
     requestAnimationFrame(animation);
 };
 animation();
+
+/**
+ * ================== Spawning Random Opponent Objects ===========================
+ */
+const numOpponents = 16;
+const OpponentsArray = [];
+
+/** Opponents class is used to 'spawn' random objects at random positions 
+ * on canvas
+ */
+class Opponent {
+    constructor(){
+        this.x = Math.random() * canvas.width; // setting x-coordinate that will spawn
+        this.y = Math.random() * canvas.height;   // setting y-coordinate that will spawn
+        this.width =  // setting width-size paramenter
+        this.height = // setting height-size paramenter
+        this.speed = Math.random() * 4 - 2; // setting a random number with range of 4 that starts at -2
+    }
+    update(){ // this function resets the position of the opponent so it generates coordinates (x and y) dependant on speed variable
+        this.x += this.speed;
+        this.y += this.speed; 
+    }
+    draw(){ // Function used to draw random rectangles that is filled according to the current fillStyle
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+}
+/** 
+ * This for loop will take a given number of desired 
+ * opponenets and will create an instance of the 
+ * class Opponents and push that instance to an empty array
+ *  */ 
+for (let i = 0; i < numOpponents; i++){
+    OpponentsArray.push(new Opponent());
+}
+
+function animateOpponent (){
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    OpponentsArray.forEach(opponent => {
+        opponent.update();
+        opponent.draw();
+    }) 
+    requestAnimationFrame(animateOpponent);
+}
+animateOpponent();

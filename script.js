@@ -64,7 +64,7 @@ class Player {
 }
 const player = new Player
 
-// Popping Batterries
+// Grabbing Batterries
 const batteriesArray = [];
 class Battery {
     constructor(){
@@ -74,6 +74,7 @@ class Battery {
         this.speed = Math.random() * 5 + 1;
         this.distance;
         this.counted = false;
+        this.sound = Math.random() <= 0.5 ? 'sound1' : 'sound2';
     }
     update(){
         this.y -= this.speed;
@@ -91,6 +92,13 @@ class Battery {
         ctx.stroke();
     }
 }
+
+const batteryCharge = document.createElement('audio');
+batteryCharge.src = 'Plug-in.wav'
+const batteryCharge2 = document.createElement('audio');
+batteryCharge2.src = 'Plug-out.wav'
+
+
 function handleBatteries(){
     if (gameFrame % 50 == 0){
         batteriesArray.push(new Battery());
@@ -105,6 +113,11 @@ function handleBatteries(){
         }
         if (batteriesArray[i].distance < batteriesArray[i].radius + player.radius){
             if (!batteriesArray[i].counted){
+                if (batteriesArray[i].sound == 'sound1'){
+                    batteryCharge.play();
+                } else {
+                    batteryCharge.play();
+                }
                 score++;
                 batteriesArray[i].counted = true;
                 batteriesArray.splice(i, 1);
@@ -123,8 +136,10 @@ function animate() {
     player.draw();
     ctx.fillStyle = 'black';
     ctx.fillText('score: ' + score, 10, 50);
-
     gameFrame++;
+    if (score > 5){
+        alert('Blast off! You can go home');
+    }
     requestAnimationFrame(animate);
 }
 animate();

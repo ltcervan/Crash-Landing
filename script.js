@@ -73,11 +73,13 @@ class Battery {
         this.radius = 25;
         this.speed = Math.random() * 5 + 1;
         this.distance;
+        this.counted = false;
     }
     update(){
         this.y -= this.speed;
         const dx = this.x - player.x;
-        const dy = this.y - player.y
+        const dy = this.y - player.y;
+        this.distance = Math.sqrt(dx*dx + dy*dy);
 
     }
     draw(){
@@ -102,7 +104,11 @@ function handleBatteries(){
             batteriesArray.splice(i, 1);
         }
         if (batteriesArray[i].distance < batteriesArray[i].radius + player.radius){
-            console.log('collision');
+            if (!batteriesArray[i].counted){
+                score++;
+                batteriesArray[i].counted = true;
+                batteriesArray.splice(i, 1);
+            }
         }
     }
 }

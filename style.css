@@ -10,7 +10,7 @@ body {
 #canvas1 {
     position: absolute;
     border: 4px solid rgb(241, 11, 11);
-    width: 800px;
+    width: 1000px;
     height: 700px;
     transform: translate(-50%, -50%);
     top: 50%;

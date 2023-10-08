@@ -1,8 +1,8 @@
 // canvas set up
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
-canvas.width = 800;
-canvas.height = 500;
+canvas.width = 1000;
+canvas.height = 700;
 
 let score = 0;
 let gameFrame = 0;
@@ -22,8 +22,52 @@ canvas.addEventListener('mousedown', function (event) {
 canvas.addEventListener('mouseup', function () {
     mouse.click = false;
 })
+/**
+ * ================== Spawning Random Opponent Objects ===========================
+ */
 
-//player
+const numOpponents = 5;
+const OpponentsArray = [];
+const OpponentImg = new Image();
+OpponentImg.src = 'skeleton-fly_01.png';
+
+/** Opponents class is used to 'spawn' random objects at random positions 
+ * on canvas
+ */
+class Opponent {
+    constructor(enemyImg) {
+        this.image = enemyImg;
+        this.alienWidth = 473;
+        this.alienHeight = 468;
+        this.width = this.alienWidth / 6; // setting width-size paramenter
+        this.height = this.alienHeight / 6;// setting height-size paramenter
+        this.x = Math.random() * (canvas.width - this.width); // setting x-coordinate that will spawn
+        this.y = Math.random() * (canvas.height - this.height);   // setting y-coordinate that will spawn
+
+    }
+    update() { // this function resets the position of the opponent so it generates coordinates (x and y) dependant on speed variable
+        this.x += Math.random() * 5 - 2.5;
+        this.y += Math.random() * 5 - 2.5;
+    }
+    draw() { // Function used to draw random rectangles that is filled according to the current fillStyle
+        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    }
+}
+/** 
+ * This for loop will take a given number of desired 
+ * opponenets and will create an instance of the 
+ * class Opponents and push that instance to an empty array
+ *  */
+for (let i = 0; i < numOpponents; i++) {
+    OpponentsArray.push(new Opponent(OpponentImg));
+}
+
+/**
+ * =============== Making Player ====================
+ */
+const robotBoy = new Image();
+robotBoy.src = 'robot.png';
 class Player {
     constructor() {
         this.x = canvas.width;
@@ -33,17 +77,17 @@ class Player {
         this.frameX = 0;
         this.frameY = 0;
         this.frame = 0;
-        this.spriteWidth = 498;
-        this.spriteHeight = 327;
+        this.spriteWidth = 796;
+        this.spriteHeight = 719;
     }
     update() {
         const dx = this.x - mouse.x;
         const dy = this.y - mouse.y;
         if (mouse.x != this.x) {
-            this.x -= dx/20;
+            this.x -= dx / 20;
         }
         if (mouse.y != this.y) {
-            this.y -= dy/20;
+            this.y -= dy / 20;
         }
     }
     draw() {
@@ -60,14 +104,16 @@ class Player {
         ctx.fill();
         ctx.closePath();
         ctx.fillRect(this.x, this.y, this.radius, 10);
+
+        ctx.drawImage(robotBoy, this.x - 60, this.y - 70, this.spriteWidth/6, this.spriteHeight/6);
     }
 }
 const player = new Player
 
-// Grabbing Batterries
+// ==================== Making Batteries ======================
 const batteriesArray = [];
 class Battery {
-    constructor(){
+    constructor() {
         this.x = Math.random() * canvas.width;
         this.y = canvas.height + 100; //--- Look here to make batteries drop instead of rise
         this.radius = 25;
@@ -76,14 +122,14 @@ class Battery {
         this.counted = false;
         this.sound = Math.random() <= 0.5 ? 'sound1' : 'sound2';
     }
-    update(){
+    update() {
         this.y -= this.speed;
         const dx = this.x - player.x;
         const dy = this.y - player.y;
-        this.distance = Math.sqrt(dx*dx + dy*dy);
+        this.distance = Math.sqrt(dx * dx + dy * dy);
 
     }
-    draw(){
+    draw() {
         ctx.fillStyle = 'blue';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
@@ -99,21 +145,21 @@ const batteryCharge2 = document.createElement('audio');
 batteryCharge2.src = 'Plug-out.wav'
 
 
-function handleBatteries(){
-    if (gameFrame % 50 == 0){
+function handleBatteries() {
+    if (gameFrame % 50 == 0) {
         batteriesArray.push(new Battery());
     }
-    for (let i = 0; i < batteriesArray.length; i++){
+    for (let i = 0; i < batteriesArray.length; i++) {
         batteriesArray[i].update();
         batteriesArray[i].draw();
     }
-    for (let i = 0; i < batteriesArray.length; i++){
-        if(batteriesArray[i].y < 0 - batteriesArray[i].radius * 2){
+    for (let i = 0; i < batteriesArray.length; i++) {
+        if (batteriesArray[i].y < 0 - batteriesArray[i].radius * 2) {
             batteriesArray.splice(i, 1);
         }
-        if (batteriesArray[i].distance < batteriesArray[i].radius + player.radius){
-            if (!batteriesArray[i].counted){
-                if (batteriesArray[i].sound == 'sound1'){
+        if (batteriesArray[i].distance < batteriesArray[i].radius + player.radius) {
+            if (!batteriesArray[i].counted) {
+                if (batteriesArray[i].sound == 'sound1') {
                     batteryCharge.play();
                 } else {
                     batteryCharge.play();
@@ -131,13 +177,17 @@ function handleBatteries(){
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    OpponentsArray.forEach(opponent => {
+        opponent.update();
+        opponent.draw();
+    })
     handleBatteries();
     player.update();
     player.draw();
     ctx.fillStyle = 'black';
     ctx.fillText('score: ' + score, 10, 50);
     gameFrame++;
-    if (score > 5){
+    if (score > 5) {
         alert('Blast off! You can go home');
     }
     requestAnimationFrame(animate);

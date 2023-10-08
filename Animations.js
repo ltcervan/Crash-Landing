@@ -91,7 +91,7 @@ animation();
  * ================== Spawning Random Opponent Objects ===========================
  */
 
-const numOpponents = 10;
+const numOpponents = 3;
 const OpponentsArray = [];
 const OpponentImg = new Image();
 OpponentImg.src = 'skeleton-fly_01.png';

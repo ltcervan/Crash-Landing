@@ -3,10 +3,10 @@ const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 canvas.width = 1000;
 canvas.height = 700;
-
 let score = 0;
 let gameFrame = 0;
 ctx.font = '50px Georgia';
+let difficulty = 1;
 // Mouse interactivity
 let canvasPosition = canvas.getBoundingClientRect();
 const mouse = {
@@ -23,45 +23,71 @@ canvas.addEventListener('mouseup', function () {
     mouse.click = false;
 })
 /**
- * ================== Spawning Random Opponent Objects ===========================
+ * ================== Setting up canvas Background ========================
+ * 
  */
+let scrollSpeed = 1;
+let scorllY = 0;
+const spaceBackground = new Image();
+spaceBackground.src = 'Starbasesnow.png';
 
-const numOpponents = 5;
-const OpponentsArray = [];
-const OpponentImg = new Image();
-OpponentImg.src = 'skeleton-fly_01.png';
 
-/** Opponents class is used to 'spawn' random objects at random positions 
+function drawBackground(){
+    ctx.drawImage(spaceBackground, 0, scorllY, canvas.width, canvas.height);
+    ctx.drawImage(spaceBackground, 0, scorllY - canvas.height, canvas.width, canvas.height);
+    scorllY += scrollSpeed;
+    if (scorllY >= canvas.height){
+        scorllY = 0;
+    }
+}
+
+
+/**
+ * ================== Spawning  Opponent Objects ===========================
+ * Opponents class is used to 'spawn' random objects at random positions 
  * on canvas
+ * 
  */
-class Opponent {
-    constructor(enemyImg) {
-        this.image = enemyImg;
-        this.alienWidth = 473;
-        this.alienHeight = 468;
-        this.width = this.alienWidth / 6; // setting width-size paramenter
-        this.height = this.alienHeight / 6;// setting height-size paramenter
-        this.x = Math.random() * (canvas.width - this.width); // setting x-coordinate that will spawn
-        this.y = Math.random() * (canvas.height - this.height);   // setting y-coordinate that will spawn
+const opponentImg = new Image();
+opponentImg.src = 'Aircrafts-04.png';
+const numOpponents = 5;
+const opponentArray = [];
 
+class Opponent {
+    constructor(){
+        this.x = canvas.width + 200;
+        this.y = Math.random() * (canvas.height - 150) + 90;
+        this.radius = 50;
+        this.speed = Math.random() * 2 + 2;
+        this.spriteHeight = 501;
+        this.spriteWidth = 501;
     }
-    update() { // this function resets the position of the opponent so it generates coordinates (x and y) dependant on speed variable
-        this.x += Math.random() * 5 - 2.5;
-        this.y += Math.random() * 5 - 2.5;
+    draw(){
+        ctx.fillStyle = 'green';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.drawImage(opponentImg, this.x - 55 , this.y - 60, this.radius * 2.45, this.radius * 2.45);
     }
-    draw() { // Function used to draw random rectangles that is filled according to the current fillStyle
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    update(){
+        this.x -= this.speed;
+        if (this.x < 0 - this.radius * 2){
+            this.x = canvas.width + 200;
+            this.y = Math.random() * (canvas.height - 150) + 90;
+            this.speed = Math.random() * 2 + 2;
+        }
     }
 }
-/** 
- * This for loop will take a given number of desired 
- * opponenets and will create an instance of the 
- * class Opponents and push that instance to an empty array
- *  */
-for (let i = 0; i < numOpponents; i++) {
-    OpponentsArray.push(new Opponent(OpponentImg));
+const opponent1 = new Opponent();
+function handleOpponent (){
+    opponent1.draw();
+    opponent1.update();
 }
+
+
+
+
+
 
 /**
  * =============== Making Player ====================
@@ -111,6 +137,8 @@ class Player {
 const player = new Player
 
 // ==================== Making Batteries ======================
+const pulseBall = new Image();
+pulseBall.src = 'pulsing-electric-ball.png';
 const batteriesArray = [];
 class Battery {
     constructor() {
@@ -177,19 +205,20 @@ function handleBatteries() {
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    OpponentsArray.forEach(opponent => {
-        opponent.update();
-        opponent.draw();
-    })
+    drawBackground();
+    handleOpponent();
     handleBatteries();
     player.update();
     player.draw();
     ctx.fillStyle = 'black';
     ctx.fillText('score: ' + score, 10, 50);
     gameFrame++;
-    if (score > 5) {
+    if (score > 10) {
         alert('Blast off! You can go home');
     }
     requestAnimationFrame(animate);
 }
 animate();
+window.addEventListener('resize', function(){
+    canvasPosition = canvas.getBoundingClientRect();
+});

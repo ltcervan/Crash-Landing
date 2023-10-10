@@ -45,7 +45,7 @@ canvas.addEventListener('mouseup', function () {
 let scrollSpeed = 1;
 let scorllY = 0;
 const spaceBackground = new Image();
-spaceBackground.src = 'Starbasesnow.png';
+spaceBackground.src = 'img/Starbasesnow.png';
 
 
 function drawBackground(){
@@ -65,7 +65,7 @@ function drawBackground(){
  * 
  */
 const opponentImg = new Image();
-opponentImg.src = 'Aircrafts-04.png';
+opponentImg.src = 'img/Aircrafts-04.png';
 const numOpponents = 5;
 const opponentArray = [];
 
@@ -111,7 +111,7 @@ function handleOpponent (){
  * =============== Making Player ====================
  */
 const robotBoy = new Image();
-robotBoy.src = 'robot.png';
+robotBoy.src = 'img/robot.png';
 class Player {
     constructor() {
         this.x = canvas.width;
@@ -155,7 +155,7 @@ const player = new Player
 
 // ==================== Making Batteries ======================
 const pulseBall = new Image();
-pulseBall.src = 'pulsing-electric-ball.png';
+pulseBall.src = 'img/pulsing-electric-ball.png';
 const batteriesArray = [];
 class Battery {
     constructor() {

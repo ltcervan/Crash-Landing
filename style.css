@@ -1,5 +1,5 @@
 body {
-    background: rgb(238, 241, 238);
+    background: rgb(117, 188, 117);
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -31,10 +31,22 @@ p {
     color: blueviolet;
     font-size: 20px;
 }
-button {
+button{
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.7rem 1rem;
+}
+button:hover{
+    cursor: pointer;
+    background-color: blanchedalmond;
+}
+.lvl{
     background-color: blueviolet;
     color: aliceblue;
     margin-bottom: 10px;
+}
+#restart {
+    background-color: rgb(50, 157, 184);
 }
 
 

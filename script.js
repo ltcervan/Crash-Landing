@@ -5,9 +5,10 @@ canvas.width = 1000;
 canvas.height = 700;
 let score = 0;
 let gameFrame = 0;
+let gameOver = false; 
 ctx.font = '50px Georgia';
 // const gameLevel = doc.getEle;
-let gameOver = false; 
+
 /**
  * =============== Game level selection ============
  */
@@ -230,6 +231,13 @@ function GameOver(results){
     gameOver = true;
 }
 
+const restartButton = document.getElementById('restart');
+restartButton.addEventListener('click', function(){
+    location.reload();
+    // score = 0;
+    // gameFrame = 0;
+    // gameOver = false; 
+})
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);

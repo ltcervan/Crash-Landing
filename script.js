@@ -7,6 +7,8 @@ let score = 0;
 let gameFrame = 0;
 ctx.font = '50px Georgia';
 let difficulty = 1;
+let gameOver = false; 
+
 // Mouse interactivity
 let canvasPosition = canvas.getBoundingClientRect();
 const mouse = {
@@ -74,7 +76,14 @@ class Opponent {
         if (this.x < 0 - this.radius * 2){
             this.x = canvas.width + 200;
             this.y = Math.random() * (canvas.height - 150) + 90;
-            this.speed = Math.random() * 2 + 2;
+            this.speed = this.speed;
+        }
+        // Collision detection with Player
+        const dx = this.x - player.x; 
+        const dy = this.y - player.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < this.radius + player.radius){
+            GameOver();
         }
     }
 }
@@ -84,8 +93,12 @@ function handleOpponent (){
     opponent1.update();
 }
 
+function GameOver(){
+    ctx.fillStyle = 'white';
+    ctx.fillText('GAME OVER', 130, 250);
+    gameOver = true;
 
-
+}
 
 
 
@@ -146,6 +159,11 @@ class Battery {
         this.y = canvas.height + 100; //--- Look here to make batteries drop instead of rise
         this.radius = 25;
         this.speed = Math.random() * 5 + 1;
+        this.frame = 0;
+        this.frameX = 0;
+        this.frameY = 0;
+        this.spriteWidth = 512;
+        this.spriteHeight = 512;
         this.distance;
         this.counted = false;
         this.sound = Math.random() <= 0.5 ? 'sound1' : 'sound2';
@@ -155,7 +173,18 @@ class Battery {
         const dx = this.x - player.x;
         const dy = this.y - player.y;
         this.distance = Math.sqrt(dx * dx + dy * dy);
-
+        if(gameFrame % 5 == 0){
+            this.frame++;
+            if (this.frame >= 8) this.frame = 0;
+            if (this.frame == 3 || this.frame == 7){
+                this.frameX = 0;
+            } else {
+                this.frameX++;
+            }
+            if (this.frame < 3) this.frameY = 0;
+            else if (this.frame < 7)this.frameY = 1;
+            else this.frameY = 0;
+        }
     }
     draw() {
         ctx.fillStyle = 'blue';
@@ -164,15 +193,15 @@ class Battery {
         ctx.fill();
         ctx.closePath();
         ctx.stroke();
+        ctx.drawImage(pulseBall, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x - 58, this.y - 58, this.radius * 4.5, this.radius * 4.5);
+
     }
 }
 
 const batteryCharge = document.createElement('audio');
 batteryCharge.src = 'Plug-in.wav'
-const batteryCharge2 = document.createElement('audio');
-batteryCharge2.src = 'Plug-out.wav'
-
-
+// const batteryCharge2 = document.createElement('audio');
+// batteryCharge2.src = 'Plug-out.wav'
 function handleBatteries() {
     if (gameFrame % 50 == 0) {
         batteriesArray.push(new Battery());
@@ -188,8 +217,6 @@ function handleBatteries() {
         if (batteriesArray[i].distance < batteriesArray[i].radius + player.radius) {
             if (!batteriesArray[i].counted) {
                 if (batteriesArray[i].sound == 'sound1') {
-                    batteryCharge.play();
-                } else {
                     batteryCharge.play();
                 }
                 score++;
@@ -210,13 +237,15 @@ function animate() {
     handleBatteries();
     player.update();
     player.draw();
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = 'green';
     ctx.fillText('score: ' + score, 10, 50);
     gameFrame++;
     if (score > 10) {
         alert('Blast off! You can go home');
     }
-    requestAnimationFrame(animate);
+    if (!gameOver) requestAnimationFrame(animate);
+
+
 }
 animate();
 window.addEventListener('resize', function(){

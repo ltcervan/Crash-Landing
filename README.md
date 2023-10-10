@@ -68,8 +68,13 @@ function handleBatteries() {
     }
 }
 
-### Uresolved Problems
+### Unresolved Problems
 1. The function mentioned above is supposed to play a sound every time the player collides with the energy orb, however the sound only occurs everyother time the two objects collide
 2. Collision detection: This can be optimized to ensure the spirite more closely resembles the shape that is being used for collision detection. Here we only used circles.
 3. The mouse movement is not very dynamic. The Player objects follows a very strict trajectory set by the mouse cursor when the point was to have a more fluid movement using the mouse.
+
+### Stretch Goals
+1. Implementing harder levels with more opponents
+2. Optimizing animations of the player and the opponents
+3. Setting a timer for added challenge. 
 

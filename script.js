@@ -11,7 +11,16 @@ ctx.font = '50px Georgia';
 
 /**
  * =============== Game level selection ============
+ * 
  */
+const level1 = document.getElementById('lvl1');
+const level2 = document.getElementById('lvl2');
+const level3 = document.getElementById('lvl3');
+// restartButton.addEventListener('click', function(){
+//     location.reload();
+// })
+
+
 
 
 // Mouse interactivity
@@ -234,9 +243,6 @@ function GameOver(results){
 const restartButton = document.getElementById('restart');
 restartButton.addEventListener('click', function(){
     location.reload();
-    // score = 0;
-    // gameFrame = 0;
-    // gameOver = false; 
 })
 
 function animate() {

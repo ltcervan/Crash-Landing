@@ -6,8 +6,12 @@ canvas.height = 700;
 let score = 0;
 let gameFrame = 0;
 ctx.font = '50px Georgia';
-let difficulty = 1;
+// const gameLevel = doc.getEle;
 let gameOver = false; 
+/**
+ * =============== Game level selection ============
+ */
+
 
 // Mouse interactivity
 let canvasPosition = canvas.getBoundingClientRect();
@@ -65,10 +69,10 @@ class Opponent {
         this.spriteWidth = 501;
     }
     draw(){
-        ctx.fillStyle = 'green';
+        /*ctx.fillStyle = 'green';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fill();*/
         ctx.drawImage(opponentImg, this.x - 55 , this.y - 60, this.radius * 2.45, this.radius * 2.45);
     }
     update(){
@@ -83,7 +87,7 @@ class Opponent {
         const dy = this.y - player.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         if (distance < this.radius + player.radius){
-            GameOver();
+            GameOver('You got Hit!');
         }
     }
 }
@@ -92,15 +96,6 @@ function handleOpponent (){
     opponent1.draw();
     opponent1.update();
 }
-
-function GameOver(){
-    ctx.fillStyle = 'white';
-    ctx.fillText('GAME OVER', 130, 250);
-    gameOver = true;
-
-}
-
-
 
 /**
  * =============== Making Player ====================
@@ -111,7 +106,7 @@ class Player {
     constructor() {
         this.x = canvas.width;
         this.y = canvas.height / 2;
-        this.radius = 50;
+        this.radius = 40;
         this.angle = 0;
         this.frameX = 0;
         this.frameY = 0;
@@ -137,12 +132,11 @@ class Player {
             ctx.lineTo(mouse.x, mouse.y);
             ctx.stroke();
         }
-        ctx.fillStyle = 'red';
+        /*ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fill();*/
         ctx.closePath();
-        ctx.fillRect(this.x, this.y, this.radius, 10);
 
         ctx.drawImage(robotBoy, this.x - 60, this.y - 70, this.spriteWidth/6, this.spriteHeight/6);
     }
@@ -187,10 +181,10 @@ class Battery {
         }
     }
     draw() {
-        ctx.fillStyle = 'blue';
+        /*ctx.fillStyle = 'blue';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fill();*/
         ctx.closePath();
         ctx.stroke();
         ctx.drawImage(pulseBall, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x - 58, this.y - 58, this.radius * 4.5, this.radius * 4.5);
@@ -230,6 +224,13 @@ function handleBatteries() {
 
 // Animate Loop 
 
+function GameOver(results){
+    ctx.fillStyle = 'white';
+    ctx.fillText(results, 130, 250);
+    gameOver = true;
+}
+
+
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBackground();
@@ -240,13 +241,13 @@ function animate() {
     ctx.fillStyle = 'green';
     ctx.fillText('score: ' + score, 10, 50);
     gameFrame++;
-    if (score > 10) {
-        alert('Blast off! You can go home');
+    if (score >= 10) {
+        GameOver('You Win! Try another level');
     }
     if (!gameOver) requestAnimationFrame(animate);
-
-
-}
+    
+    
+};
 animate();
 window.addEventListener('resize', function(){
     canvasPosition = canvas.getBoundingClientRect();

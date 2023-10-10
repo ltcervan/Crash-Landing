@@ -203,7 +203,7 @@ class Battery {
 }
 
 const batteryCharge = document.createElement('audio');
-batteryCharge.src = 'Plug-in.wav'
+batteryCharge.src = 'audio/Plug-in.wav'
 // const batteryCharge2 = document.createElement('audio');
 // batteryCharge2.src = 'Plug-out.wav'
 function handleBatteries() {

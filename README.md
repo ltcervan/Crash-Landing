@@ -47,7 +47,6 @@ This is an example of the update funtion within the class Opponent. The first pa
 How to handle the floating orbs--- This function is responsible for making the energy orbs disapear after they have collided with the Player, how to add to the score when collision happens and how to play sounds when collision occurs:
 
 ```
-
 function handleBatteries() {
     if (gameFrame % 50 == 0) {
         batteriesArray.push(new Battery());

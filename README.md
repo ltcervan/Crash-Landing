@@ -1,4 +1,4 @@
-# Crash-Landing
+# Robot Boy
 JavaScript Video Game
 ![GameImage](https://github.com/ltcervan/Crash-Landing/assets/26885863/9f22d5f5-23c8-4eab-9d9c-b3d468dd9514)
 Join Robot Boy as he attempts to repower his jets by collection energy orbs while simultaneously evading capture from the ailen ships!

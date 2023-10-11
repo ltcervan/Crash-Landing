@@ -83,3 +83,8 @@ function handleBatteries() {
 2. Optimizing animations of the player and the opponents
 3. Setting a timer for added challenge. 
 
+### Resources
+![FranksLaboratory](https://www.youtube.com/c/Frankslaboratory)
+![FranksLaboratory](https://youtu.be/GVuU25pGaYo?si=Wa1Acf3_DxwYVEf9)
+![FreeCodeCamp](https://youtu.be/GFO_txvwK_c?si=wnyKYxOb0YzJfkNH)
+![CodingWithRuss](https://youtu.be/JsErMawwdOw?si=t6Esvn3XRM7bcM7f)

@@ -7,15 +7,25 @@ let score = 0;
 let gameFrame = 0;
 let gameOver = false; 
 ctx.font = '50px Georgia';
+// let gameLevel = 1;
 // const gameLevel = doc.getEle;
 
 /**
  * =============== Game level selection ============
  * 
  */
-const level1 = document.getElementById('lvl1');
-const level2 = document.getElementById('lvl2');
-const level3 = document.getElementById('lvl3');
+
+// const level3Button = document.getElementById('lvl3');
+// level3Button.addEventListener('click', function(){
+//     console.log('level 3');
+//     let gameLevel = 10;
+// })
+// let level1 = document.getElementById('lvl1');
+//     level1 = 2;
+// let level2 = document.getElementById('lvl2');
+// level2 = 5;
+// const level3 = document.getElementById('lvl3');
+// const level3 = 7;
 // restartButton.addEventListener('click', function(){
 //     location.reload();
 // })
@@ -70,10 +80,11 @@ const numOpponents = 5;
 const opponentArray = [];
 
 class Opponent {
-    constructor(){
+    constructor(gameLevel){
         this.x = canvas.width + 200;
         this.y = Math.random() * (canvas.height - 150) + 90;
         this.radius = 50;
+        // this.gameLevel = gameLevel
         this.speed = Math.random() * 2 + 2;
         this.spriteHeight = 501;
         this.spriteWidth = 501;
@@ -256,7 +267,7 @@ function animate() {
     ctx.fillText('score: ' + score, 10, 50);
     gameFrame++;
     if (score >= 10) {
-        GameOver('You Win! Try another level');
+        GameOver('You Win!');
     }
     if (!gameOver) requestAnimationFrame(animate);
     

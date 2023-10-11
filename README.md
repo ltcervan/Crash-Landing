@@ -18,7 +18,7 @@ To run the game locally, follow these steps:
 3. Use a development server or open the `index.html` file in your browser.
 4. Open the directory in your text editor to view or edit the code
 
-To run the game in the browser follow this link : https://ltcervan.github.io/Crash-Landing/
+To run the game in the browser follow this link : https://ltcervan.github.io/Robot_Boy/
 
 ### Approach
 This code was primarily built around the use of 3 classes which had 2 function, update() and draw(). This outline was used to build the main components of the game, namely, Player(), Opponent() and Battery().
@@ -26,6 +26,7 @@ The update() function of the class was used to position and control the element 
 
 ### Code Explanations 
 This is an example of the update funtion within the class Opponent. The first part of the funtion is responsible for setting the "spawning" condition of the opponent. Where on the canvas the Opponent will spawn from and in what direction the opponent will be heading. The second half of this function handles the collision detection between the Player and Opponent. Here we chose to use collision detection bewteen two circles. This collision detection method employs the Pythagorean Theorem which finds the distance between two objects then once you have the distance, you can compare it to the sum of the radii or half-widths of the objects. If distance is less than or equal to the sum of the radii, it means the objects are colliding.
+```
  update(){
         this.x -= this.speed;
         if (this.x < 0 - this.radius * 2){
@@ -41,8 +42,11 @@ This is an example of the update funtion within the class Opponent. The first pa
             GameOver('You got Hit!');
         }
     }
+```
 
 How to handle the floating orbs--- This function is responsible for making the energy orbs disapear after they have collided with the Player, how to add to the score when collision happens and how to play sounds when collision occurs:
+
+```
 
 function handleBatteries() {
     if (gameFrame % 50 == 0) {
@@ -68,6 +72,7 @@ function handleBatteries() {
         }
     }
 }
+```
 
 ### Unresolved Problems
 1. The function mentioned above is supposed to play a sound every time the player collides with the energy orb, however the sound only occurs everyother time the two objects collide
